@@ -1,10 +1,11 @@
-# Wazoku customer support developer test
+# Wazoku data science backend developer test
 
 ## Description
-This repo represents a stripped down version of our core ideas platform product 'Idea Spotlight'.
-We have a customer export script named `user_activity_export.sh` which is run manually
-and collates all the user activity for a given customer across the
-site then emails the resulting data file to a named manager.
+(REWORD!!!!) This repo represents a stripped down version of our core ideas platform product 'Idea Spotlight'. A command is included that can be used to populate a database with ideas having associated description text that consists of words randomly sampled from a given vocabulary. Also included is a script named `save_feature_vectors.py` which is run manually and saves a feature vector of term frequency-inverse document frequency (TF-IDF) weights for each idea. For each of these feature vectors, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of ideas. These similarities are the cosine similarities of the TF-IDF vectors associated with the ideas (see Cosine similarity algorithm section below).
+
+## TF-IDF algorithm
+
+## Cosine similarity algorithm
 
 ## Getting started
 
