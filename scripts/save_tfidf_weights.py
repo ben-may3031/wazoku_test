@@ -34,10 +34,10 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
     return idf_dict
 
 
-def save_feature_vectors(ideas, idf_dict):
-    models.IdeaFeatureVector.objects.all().delete()
+def save_tfidf_weights(ideas, idf_dict):
+    models.IdeaTfidfWeights.objects.all().delete()
 
-    feature_vector_objects = []
+    idea_tfidf_weights_objects = []
 
     for idea in ideas:
         idea_tfidf_dict = {}
@@ -56,14 +56,14 @@ def save_feature_vectors(ideas, idf_dict):
             for key, value in idea_tfidf_dict.items()
         )
 
-        feature_vector_objects.append(
-            models.IdeaFeatureVector(
+        idea_tfidf_weights_objects.append(
+            models.IdeaTfidfWeights(
                 idea_id=idea['pk'],
                 tfidfs=json.dumps(idea_tfidf_dict_normalised),
             )
         )
 
-    models.IdeaFeatureVector.objects.bulk_create(feature_vector_objects)
+    models.IdeaTfidfWeights.objects.bulk_create(idea_tfidf_weights_objects)
 
 
 def main():
@@ -79,7 +79,7 @@ def main():
 
     idf_dict = evaluate_idf_dict(vocabulary, idea_descriptions)
 
-    save_feature_vectors(ideas, idf_dict)
+    save_tfidf_weights(ideas, idf_dict)
 
 
 if __name__ == "__main__":
