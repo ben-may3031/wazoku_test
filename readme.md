@@ -1,11 +1,11 @@
 # Wazoku data science backend developer test
 
 ## Description
-(REWORD!!!!) This repo represents a stripped down version of our core ideas platform product 'Idea Spotlight'. A command is included that can be used to populate a database with ideas having associated description text that consists of words randomly sampled from a given vocabulary. Also included is a script named `save_feature_vectors.py` which is run manually and saves a feature vector of term frequency-inverse document frequency (TF-IDF) weights for the description associated with each idea. For each of these feature vectors, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below).
+This repo contains a method for measuring the similarity of description text associated with pairs of idea objects in a collection of idea objects. A command is included that can be used to populate a database with ideas having associated description text that consists of terms randomly sampled from a given vocabulary. Also included is a script named `save_tfidf_weights.py` which is run manually and saves a collection of term frequency-inverse document frequency (TF-IDF) weights for the descriptions associated with ideas. For each idea, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). TF-IDF weights are intended to reflect how important a term is to a document in a collection of documents. To simplfy this assessment, no pre-processing of text occurs prior to evaluating TF-IDF weights. Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below).
 
 ## TF-IDF algorithm
 
-The vocabulary used for this exercise is a fixed list of 100 words. For each term, t, in the vocabulary, an inverse document frequency (IDF) is evaluated as follows:
+The vocabulary used for this exercise is a fixed list of 100 terms. For each term, t, in the vocabulary, an inverse document frequency (IDF) is evaluated as follows:
 
 - Set N to be the total number of ideas
 - Set n to be the number of ideas that have a description containing term t at least once
@@ -16,7 +16,7 @@ The TF-IDF weight for idea i and term t is then evaluated as follows:
 - The term frequency (TF) for term t in idea i is the number of times t appears in the description for i. Let us denote the TF for term t in idea i as TF_(t, i).
 - The TF-IDF weight for idea i and term t, denoted TF-IDF_(t, i) is then given by TF_(t, i) * IDF_t.
 
-The TF-IDF feature vector for idea i is the collection of TF-IDF_(t, i) weights for all t in the vocabulary  
+For each idea i, we store the collection of TF-IDF_(t, i) weights for all t in the vocabulary.
 
 ## Cosine similarity algorithm
 
