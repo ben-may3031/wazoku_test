@@ -11,13 +11,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         site, _ = Site.objects.get_or_create(domain="example.com")
 
+        ideas = []
+
         for i in range(1000):
             name = 'Idea ' + str(i)
-            description = " ".join(random.sample(RANDOM_WORD_LIST, 20))
+            description = " ".join(random.choices(RANDOM_WORD_LIST, k=20))
 
-            idea = Idea(
-                name=name,
-                description=description,
-                site=site
+            ideas.append(
+                Idea(
+                    name=name,
+                    description=description,
+                    site=site
+                )
             )
-            idea.save()
+
+        Idea.objects.bulk_create(ideas)
