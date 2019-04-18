@@ -1,7 +1,7 @@
 # Wazoku data science backend developer test
 
 ## Description
-This repo contains a method for measuring the similarity of description text associated with pairs of idea objects in a collection of idea objects. A command is included that can be used to populate a database with ideas having associated description text that consists of terms randomly sampled from a given vocabulary. Also included is a script named `save_tfidf_weights.py` which is run manually and saves a collection of term frequency-inverse document frequency (TF-IDF) weights for the descriptions associated with ideas. For each idea, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). TF-IDF weights are intended to reflect how important a term is to a document in a collection of documents. To simplfy this assessment, no pre-processing of text occurs prior to evaluating TF-IDF weights. Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below).
+This repo contains a method for measuring the similarity of description text associated with pairs of idea objects in a collection of idea objects. A command is included that can be used to populate a database with ideas having associated description text that consists of terms randomly sampled from a given vocabulary. Also included is a script named `save_tfidf_weights.py` which is run manually and saves a collection of term frequency-inverse document frequency (TF-IDF) weights for the descriptions associated with ideas. For each idea, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). TF-IDF weights are intended to reflect how important a term is to a document in a collection of documents. To simplfy this assessment, no pre-processing of text occurs prior to evaluating TF-IDF weights. Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below). We label the object saved as a recommendation, since it contains the ids for the two ideas and the similarity of the their text FINISH!!!!
 
 ## TF-IDF algorithm
 
@@ -53,45 +53,43 @@ The code in this repo uses an sqlite database as the persistence layer. You can 
 
     bin/python manage.py migrate
 
-There is a simple django `populate_db` command which can be used to prime the database with some example data
+There is a simple django `populate_db` command which can be used to prime the database with some idea data (the descriptions for the ideas are 20 terms randomly sampled from the set vocabulary using an uneven probability distribution with duplicates allowed)
 
     bin/python manage.py populate_db
 
-The user export script can be run with the following:
+The script to save tfidf weights can be run with the following:
 
-    bin/python -m scripts.user_activity_export \
-      -c example.com \
-      -e recipient@email.com
+    bin/python -m scripts.save_tfidf_weights
+    
+After the tfidf weights have been saved, the script to save recommendations can be run with the following:
+
+    bin/python -m scripts.save_recommendations
 
 There is also a unit test which can be used to validate the code:
 
     bin/python manage.py test tests/*
 
 
-
 ## Exercise 1
 
-Our clients wish to receive a list of inactive users as well as active ones. Given the limitation
-of the csv format, we propose generating an Excel document instead of a csv file. Use the
-[openpyxl](https://openpyxl.readthedocs.org/) library to modify the code to produce an xlsx document
-containing two sheets, the first mirrors the csv with a list of active users and their activity, the
-second sheet contains a list of email addresses for those users with no activity on the site.
-Feel free to refactor the code any way you see fit.
+SCRIPT FOR REC. REQUESTS (+ TEST)
 
 Please create a pull request for this work.
 
 ## Exercise 2
 
-Although the tests are all passing, after a recent refactoring this code appears to have stopped working as
-our customers are all reporting they are not receiving the emails when we run the script
-(although occasionally the wrong manager does receive an email).
-Please identify and fix the problem and issue a second pull request for your fix.
+REFACTOR FEATURE VECTORS
 
-Bonus marks will be awarded for the addition of tests against your fix
+Please create a pull request for this work.
 
 ## Exercise 3
 
-The current script is not particularly efficient against large customers. Can you improve on
-the current code and reduce it's complexity from `O(N)` to `O(1)`. You might want to consider using [assertNumQueries]( https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries) to help you confirm this.
+HALF NUMBER OF REC OBJECTS
+
+Please create a third pull request for this work.
+
+## Exercise 4
+
+MEMORY CONSIDERATIONS
 
 Please create a third pull request for this work.
