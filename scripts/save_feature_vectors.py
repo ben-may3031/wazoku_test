@@ -7,6 +7,7 @@ import os # isort:skip # noqa
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercise.settings')  # isort:skip # noqa
 django.setup()  # isort:skip # noqa
 
+import json
 import math
 from central import models
 from central.management.commands.utils.random_words import RANDOM_WORD_LIST
@@ -23,12 +24,10 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
             if word in description
         )
 
-        print(number_of_ideas_featuring_word)
-
         idf_dict[word] = (
             1 + math.log(
                 (number_of_ideas + 1)
-                / (number_of_ideas_featuring_word)
+                / (number_of_ideas_featuring_word + 1)
             )
         )
 
@@ -36,8 +35,24 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
 
 
 def save_feature_vectors(ideas, idf_dict):
+    feature_vector_objects = []
+
     for idea in ideas:
-        print("TEST")
+        idea_tfidf_dict = {}
+
+        for word, idf in idf_dict.items():
+            tf = idea['description'].count(word)
+            tfidf = tf * idf
+            idea_tfidf_dict[word] = tfidf
+
+        feature_vector_objects.append(
+            models.IdeaFeatureVector(
+                idea_id=idea['pk'],
+                tfidfs=json.dumps(idea_tfidf_dict),
+            )
+        )
+
+    models.IdeaFeatureVector.objects.bulk_create(feature_vector_objects)
 
 
 def main():
