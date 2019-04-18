@@ -13,12 +13,15 @@ The vocabulary used for this exercise is a fixed list of 100 terms. For each ter
 
 The TF-IDF weight for idea i and term t is then evaluated as follows:
 
-- The term frequency (TF) for term t in idea i is the number of times t appears in the description for i. Let us denote the TF for term t in idea i as TF_(t, i).
-- The TF-IDF weight for idea i and term t, denoted TF-IDF_(t, i) is then given by TF_(t, i) * IDF_t.
+- The term frequency (TF) for term t in idea i is the number of times t appears in the description for i. Let us denote the TF for term t in idea i as TF_(i, t).
+- The TF-IDF weight for idea i and term t, denoted TF-IDF_(i, t) is then given by TF_(i, t) * IDF_t.
+- NORMALISATION!!!!!
 
-For each idea i, we store the collection of TF-IDF_(t, i) weights for all t in the vocabulary.
+For each idea i, we store the collection of normalised TF-IDF_(i, t) weights for all t in the vocabulary.
 
 ## Cosine similarity algorithm
+
+The cosine simlarity of two vectors is the cosine of the angle between the vectors. TF-IDF TO VECTOR BIT!!!! Since TF-IDF weights for an idea are already normalised, the cosine similarity of the TF-IDF weights associated with idea i and those associated with idea j is given by the sum of TF-IDF_(t, i) * TF-IDF_(t, j) over all terms t in the vocabulary. 
 
 ## Getting started
 
@@ -26,14 +29,14 @@ Copying the repository
 
 Due to the public nature of forks we suggest you duplicate the repo rather then forking it. 
 You will need to create your own repo e.g. `[your_github_username]/wazoku_test` and then clone 
-this repo `chrispbailey/wazoku_test` and push the code into your new one. You can follow the steps for doing this here: https://help.github.com/articles/duplicating-a-repository/
+this repo `ben-may3031/wazoku_test` and push the code into your new one. You can follow the steps for doing this here: https://help.github.com/articles/duplicating-a-repository/
 
 Before proceeded be aware that this exercise assumes you are using a linux machine with [pip](https://pip.pypa.io/en/stable) and [virtualenv](https://virtualenv.pypa.io/en/stable/) installed. 
 
-Create a new virtualenv in your checked out repo.
+Create a new python 3.6 virtualenv in your checked out repo.
 
     cd /[path_to]/wazoku_test
-    virtualenv .
+    virtualenv -p python3.6 .
 
 
 Then install the dependencies:
