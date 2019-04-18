@@ -35,6 +35,8 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
 
 
 def save_feature_vectors(ideas, idf_dict):
+    models.IdeaFeatureVector.objects.all().delete()
+
     feature_vector_objects = []
 
     for idea in ideas:
