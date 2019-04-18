@@ -1,6 +1,12 @@
+import random
+
 from django.core.management.base import BaseCommand
 
-from central.models import Challenge, Idea, IdeaVote, Site, User
+from central.management.commands.utils.random_words import (
+    RANDOM_WORD_LIST,
+    RANDOM_WORD_LIST_WEIGHTS,
+)
+from central.models import Idea, Site
 
 
 class Command(BaseCommand):
@@ -8,43 +14,31 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         site, _ = Site.objects.get_or_create(domain="example.com")
 
-        # Create some users
-        contributor = User(
-            username="contributor",
-            email="contributor@example.com",
-            first_name="Regular",
-            last_name="User",
-            is_contributor=True,
-            site=site
-        )
-        contributor.save()
+        # delete existing ideas
+        Idea.objects.all().delete()
 
-        manager = User(
-            username="manager",
-            email="manager@example.com",
-            first_name="Mr",
-            last_name="Manager",
-            is_manager=True,
-            site=site
-        )
-        manager.save()
+        ideas = []
 
-        # Create a challenge and idea
-        challenge = Challenge(
-            name="Example challenge",
-            description="A simple challenge for our tests",
-            creator=manager,
-            site=site
-        )
-        challenge.save()
+        for i in range(1000):
+            name = 'Idea ' + str(i)
 
-        idea = Idea(
-            name='Test idea for our challenge',
-            summary='Simple idea',
-            challenge=challenge,
-            creator=contributor,
-            site=site
-        )
-        idea.save()
+            # build a description consisting of 20 words sampled from
+            # RANDOM_WORD_LIST using RANDOM_WORD_LIST_WEIGHTS for the
+            # probability weighting
+            description = " ".join(
+                random.choices(
+                    population=RANDOM_WORD_LIST,
+                    weights=RANDOM_WORD_LIST_WEIGHTS,
+                    k=20,
+                )
+            )
 
-        IdeaVote(creator=contributor, idea=idea).save()
+            ideas.append(
+                Idea(
+                    name=name,
+                    description=description,
+                    site=site
+                )
+            )
+
+        Idea.objects.bulk_create(ideas)
