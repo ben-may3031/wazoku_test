@@ -18,7 +18,7 @@ def get_similarity(
     similarity = 0
 
     for word, tfidf in idea_feature_vector_1.items():
-        similarity += tfidf * idea_feature_vector_2.get(word, default=0)
+        similarity += tfidf * idea_feature_vector_2.get(word, 0)
 
     return similarity
 
@@ -52,8 +52,8 @@ def main():
             recommendation_objects.append(
                 models.Recommendation(
                     similarity=similarity,
-                    idea_1=outer_idea_id,
-                    idea_2=inner_idea_id,
+                    idea_1_id=outer_idea_id,
+                    idea_2_id=inner_idea_id,
                 )
             )
 
