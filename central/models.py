@@ -27,7 +27,7 @@ class Idea(TimestampModel):
         app_label = 'central'
 
 
-class IdeaFeatureVector(models.Model):
+class IdeaTfidfWeights(models.Model):
     idea = models.OneToOneField(
         Idea,
         on_delete=models.CASCADE,
