@@ -100,3 +100,9 @@ RANDOM_WORD_LIST = [
     'brazen',
     'cheswick',
 ]
+
+# generate a probability distribution over the 100 elements of
+# RANDOM_WORD_LIST
+possible_weight_values = [0.001, 0.005, 0.01, 0.015, 0.019]
+RANDOM_WORD_LIST_WEIGHTS = [possible_weight_values[i % 5] for i in range(99)]
+RANDOM_WORD_LIST_WEIGHTS.append(1 - sum(RANDOM_WORD_LIST_WEIGHTS))
