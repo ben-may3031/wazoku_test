@@ -41,16 +41,25 @@ def save_feature_vectors(ideas, idf_dict):
 
     for idea in ideas:
         idea_tfidf_dict = {}
+        sum_of_squares = 0
 
         for word, idf in idf_dict.items():
             tf = idea['description'].count(word)
             tfidf = tf * idf
             idea_tfidf_dict[word] = tfidf
+            sum_of_squares += tfidf * tfidf
+
+        idea_tfidf_magnitude = math.sqrt(sum_of_squares)
+
+        idea_tfidf_dict_normalised = dict(
+            (key, value / idea_tfidf_magnitude)
+            for key, value in idea_tfidf_dict.items()
+        )
 
         feature_vector_objects.append(
             models.IdeaFeatureVector(
                 idea_id=idea['pk'],
-                tfidfs=json.dumps(idea_tfidf_dict),
+                tfidfs=json.dumps(idea_tfidf_dict_normalised),
             )
         )
 
