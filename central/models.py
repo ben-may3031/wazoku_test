@@ -28,6 +28,12 @@ class Idea(TimestampModel):
 
 
 class IdeaTfidfWeights(models.Model):
+    """
+    This object represents the normalised term frequency-inverse document
+    (TF-IDF) weights for an idea across all words in the vocabulary in a JSON
+    represented as a string, and is related to the idea through a
+    OneToOneField.
+    """
     idea = models.OneToOneField(
         Idea,
         on_delete=models.CASCADE,
@@ -42,6 +48,9 @@ class IdeaTfidfWeights(models.Model):
 
 
 class Recommendation(models.Model):
+    """
+    This object represents a similarity measure between a pair of ideas.
+    """
     similarity = models.FloatField(default=0)
     idea_1 = models.ForeignKey(
         Idea,
