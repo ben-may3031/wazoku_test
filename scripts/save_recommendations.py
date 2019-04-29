@@ -1,6 +1,9 @@
-'''
-BLURB!!!!
-'''
+"""
+Saves an Recommendation object to the database for each pair of ideas.
+Each object stores the cosine similarity between the (normalised) TF-IDF
+weights associated with the ideas, and is related to each idea through a
+ForeignKey field.
+"""
 import django # isort:skip # noqa
 import os # isort:skip # noqa
 
@@ -15,7 +18,18 @@ def get_similarity(
     idea_1_tfidfs,
     idea_2_tfidfs,
 ):
-    similarity = 0
+    """
+    Evaluates the cosine similarity between two sets of the TF-IDF weights
+
+    Arguments:
+    - dict with words from the vocabulary as keys and TF-IDF weights as values
+    - another dict with words from the vocabulary as keys and TF-IDF weights as
+    values
+
+    Returns:
+    - a float representing cosine similarity
+    """
+    similarity = 0.0
 
     for word, tfidf in idea_1_tfidfs.items():
         similarity += tfidf * idea_2_tfidfs.get(word, 0)
@@ -24,8 +38,11 @@ def get_similarity(
 
 
 def main():
+    # Delete all existing Recommendation objects
     models.Recommendation.objects.all().delete()
 
+    # Evaluate a dict with idea ids as keys and associated
+    # TF-IDF dicts as values.
     idea_tfidf_dict = dict(
         models.IdeaTfidfWeights.objects
         .values_list('idea_id', 'tfidfs')
@@ -33,6 +50,8 @@ def main():
 
     recommendation_objects = []
 
+    # Loop over all pairs of ideas, evaluating the cosine similarity
+    # between the TF-IDF weights for each of the two ideas.
     for (
         outer_idea_id,
         outer_idea_tfidf_string,
@@ -57,6 +76,7 @@ def main():
                 )
             )
 
+    # Save the new Recommendation objects to the database
     models.Recommendation.objects.bulk_create(recommendation_objects)
 
 

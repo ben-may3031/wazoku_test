@@ -1,9 +1,9 @@
-'''
+"""
 Saves an IdeaTfidfWeights object to the database for each idea. Each object
 stores the normalised term frequency-inverse document (TF-IDF) weights for all
 words in the vocabulary in a JSON represented as a string, and is related to
 its idea through a OneToOneField.
-'''
+"""
 import django # isort:skip # noqa
 import os # isort:skip # noqa
 
@@ -17,7 +17,7 @@ from central.management.commands.utils.random_words import RANDOM_WORD_LIST
 
 
 def evaluate_idf_dict(vocabulary, idea_descriptions):
-    '''
+    """
     Loop over all words in the vocabulary. For each word count the number of
     idea descriptions that contain the word and then calculate the inverse
     document frequency (IDF) for that word
@@ -29,7 +29,7 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
 
     Returns:
     - a dict with words from the vocabulary as keys and IDFs as values
-    '''
+    """
     number_of_ideas = len(idea_descriptions)
 
     idf_dict = {}
@@ -51,7 +51,7 @@ def evaluate_idf_dict(vocabulary, idea_descriptions):
 
 
 def save_tfidf_weights(ideas, idf_dict):
-    '''
+    """
     For each idea, evaluate the normalised term frequency-inverse document
     frequency (TF-IDF) weight for all terms in the vocabulary and stores the
     result in the database. Note that old results are deleted first.
@@ -61,7 +61,7 @@ def save_tfidf_weights(ideas, idf_dict):
     - a dict with words from the vocabulary as keys and IDFs as values
 
     Returns nothing
-    '''
+    """
     models.IdeaTfidfWeights.objects.all().delete()
 
     idea_tfidf_weights_objects = []
