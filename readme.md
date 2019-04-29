@@ -1,7 +1,7 @@
 # Wazoku data science backend developer test
 
 ## Description
-This repo contains a method for measuring the similarity of description text associated with pairs of idea objects in a collection of idea objects. A command is included that can be used to populate a database with ideas having associated description text that consists of terms randomly sampled from a given vocabulary. Also included is a script named `save_tfidf_weights.py` which is run manually and saves a collection of term frequency-inverse document frequency (TF-IDF) weights for the descriptions associated with ideas. For each idea, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). TF-IDF weights are intended to reflect how important a term is to a document in a collection of documents. To simplfy this assessment, no pre-processing of text occurs prior to evaluating TF-IDF weights. Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below). We label the object saved as a recommendation, since it contains the ids for the two ideas and the similarity of the their text FINISH!!!!
+This repo contains a method for measuring the similarity of description text associated with pairs of idea objects in a collection of idea objects. These similarities can be used to recommend related ideas to a focal idea. A command is included that can be used to populate a database with ideas having associated description text that consists of terms randomly sampled from a given vocabulary. Also included is a script named `save_tfidf_weights.py` which is run manually and saves a collection of term frequency-inverse document frequency (TF-IDF) weights for the descriptions associated with ideas. For each idea, a weight is stored for each term appearing in the vocabulary (see TF-IDF algorithm section below). TF-IDF weights are intended to reflect how important a term is to a document in a collection of documents. To simplfy this assessment, no pre-processing of text occurs prior to evaluating TF-IDF weights. Finally, a script called `save_recommendations.py` is included which is also run manually and saves a similarity for each pair of idea descriptions. These similarities are the cosine similarities of the TF-IDF vectors associated with the idea description (see Cosine similarity algorithm section below).
 
 ## TF-IDF algorithm
 
@@ -11,13 +11,13 @@ The vocabulary used for this exercise is a fixed list of 100 terms. For each ter
 - Set n to be the number of ideas that have a description containing term t at least once
 - The IDF for term t is then given by 1 + log((N + 1) / (n + 1)), where log is the natural logarithm (base e). It is therefore the case that the IDF for term t decreases as n increases (so that "rare" terms have a relatively high IDF and "common" terms have a relatively low IDF). Let us denote the IDF for term t as IDF_t.
 
-The TF-IDF weight for idea i and term t is then evaluated as follows:
+The normalised TF-IDF weight for idea i and term t is then evaluated as follows:
 
 - The term frequency (TF) for term t in idea i is the number of times t appears in the description for i. Let us denote the TF for term t in idea i as TF_(i, t).
 - The TF-IDF weight for idea i and term t, denoted TF-IDF_(i, t) is then given by TF_(i, t) * IDF_t.
-- NORMALISATION!!!!!
+- TF-IDF weights are then normalised so that the vector made from the TF-IDF weights for an idea has length 1. The magnitude of the vector for idea i, denoted M_i, is given by SQRT(SUM(TF-IDF_(i, t)^2 for all t in the vocabulary)). The normalised TF-IDF weight for idea i and term t is then given by TF-IDF_(i, t) / M_i.
 
-For each idea i, we store the collection of normalised TF-IDF_(i, t) weights for all t in the vocabulary.
+For each idea, we store the collection of normalised TF-IDF weights for all terms in the vocabulary.
 
 ## Cosine similarity algorithm
 
