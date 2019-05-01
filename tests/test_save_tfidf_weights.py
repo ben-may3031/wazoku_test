@@ -1,9 +1,8 @@
 import json
 import math
 
-from django.test import TestCase
-
 from central.models import Idea, Site
+from django.test import TestCase
 from scripts import save_tfidf_weights
 
 
