@@ -12,6 +12,7 @@ django.setup()  # isort:skip # noqa
 
 import json
 import math
+
 from central import models
 from central.management.commands.utils.random_words import RANDOM_WORD_LIST
 

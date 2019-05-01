@@ -11,6 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercise.settings')  # isort:sk
 django.setup()  # isort:skip # noqa
 
 import json
+
 from central import models
 
 
