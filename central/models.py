@@ -39,7 +39,7 @@ class IdeaTfidfWeights(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name='idea_feature_vector',
+        related_name='idea_tfidf_weights',
     )
     tfidfs = models.TextField(blank=True)
 
