@@ -104,7 +104,7 @@ class SaveTfidfWeightsTests(TestCase):
         ) = self.get_expectations()
 
         # Get self.ideaA normalised TF-IDFs from the database
-        ideaA_tfidfs = json.loads(self.ideaA.idea_feature_vector.tfidfs)
+        ideaA_tfidfs = json.loads(self.ideaA.idea_tfidf_weights.tfidfs)
 
         # Assert that self.ideaA TF-IDFs are as expected
         assert ideaA_tfidfs['jovian'] == expected_ideaA_jovian_tfidf_normalised
@@ -115,7 +115,7 @@ class SaveTfidfWeightsTests(TestCase):
         )
 
         # Get self.ideaB normalised TF-IDFs from the database
-        ideaB_tfidfs = json.loads(self.ideaB.idea_feature_vector.tfidfs)
+        ideaB_tfidfs = json.loads(self.ideaB.idea_tfidf_weights.tfidfs)
 
         # Assert that self.ideaB TF-IDFs are as expected
         assert ideaB_tfidfs['jovian'] == expected_ideaB_jovian_tfidf_normalised
