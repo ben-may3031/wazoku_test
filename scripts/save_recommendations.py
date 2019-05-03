@@ -11,6 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercise.settings')  # isort:sk
 django.setup()  # isort:skip # noqa
 
 import json
+import time
 
 from central import models
 
@@ -39,6 +40,9 @@ def get_similarity(
 
 
 def main():
+    # Store time at start of script run
+    start_time = time.time()
+
     # Delete all existing Recommendation objects
     models.Recommendation.objects.all().delete()
 
@@ -79,6 +83,9 @@ def main():
 
     # Save the new Recommendation objects to the database
     models.Recommendation.objects.bulk_create(recommendation_objects)
+
+    # Print time taken for script to run
+    print('Time taken: ' + str(time.time() - start_time))
 
 
 if __name__ == "__main__":
