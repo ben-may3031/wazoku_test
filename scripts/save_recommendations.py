@@ -48,7 +48,7 @@ def main():
 
     # Evaluate a dict with idea ids as keys and associated
     # TF-IDF dicts as values.
-    idea_tfidf_dict = dict(
+    idea_tfidf_tuples = (
         models.IdeaTfidfWeights.objects
         .values_list('idea_id', 'tfidfs')
     )
@@ -60,12 +60,12 @@ def main():
     for (
         outer_idea_id,
         outer_idea_tfidf_string,
-    ) in idea_tfidf_dict.items():
+    ) in idea_tfidf_tuples:
         for (
             inner_idea_id,
             inner_idea_tfidf_string,
-        ) in idea_tfidf_dict.items():
-            if outer_idea_id == inner_idea_id:
+        ) in idea_tfidf_tuples:
+            if outer_idea_id >= inner_idea_id:
                 continue
 
             similarity = get_similarity(

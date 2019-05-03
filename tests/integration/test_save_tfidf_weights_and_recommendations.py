@@ -34,10 +34,3 @@ class SaveTfidfWeightsAndRecommendationsTests(TestCase):
             .get(idea_1_id=self.ideaA.pk, idea_2_id=self.ideaB.pk)
             .similarity
         ) == 0.19431434016858146
-
-        # Assert (self.idea2, self.idea1) similarity is as expected
-        assert (
-            Recommendation.objects
-            .get(idea_1_id=self.ideaB.pk, idea_2_id=self.ideaA.pk)
-            .similarity
-        ) == 0.19431434016858146

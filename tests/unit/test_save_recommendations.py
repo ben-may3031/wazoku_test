@@ -65,15 +65,6 @@ class SaveRecommendationsTests(TestCase):
             .similarity
         ) == expected_ideaA_ideaC_similarity
 
-        # Assert that (self.ideaB, self.ideaA) similarity is as expected
-        expected_ideaB_ideaA_similarity = 1.0 * 0.6 + 0.0 * 0.8 + 0.0 * 0.0
-
-        assert (
-            Recommendation.objects
-            .get(idea_1_id=self.ideaB.pk, idea_2_id=self.ideaA.pk)
-            .similarity
-        ) == expected_ideaB_ideaA_similarity
-
         # Assert that (self.ideaB, self.ideaC) similarity is as expected
         expected_ideaB_ideaC_similarity = 1.0 * 0.0 + 0.0 * 0.6 + 0.0 * 0.8
 
@@ -82,21 +73,3 @@ class SaveRecommendationsTests(TestCase):
             .get(idea_1_id=self.ideaB.pk, idea_2_id=self.ideaC.pk)
             .similarity
         ) == expected_ideaB_ideaC_similarity
-
-        # Assert that (self.ideaC, self.ideaA) similarity is as expected
-        expected_ideaC_ideaA_similarity = 0.0 * 0.6 + 0.6 * 0.8 + 0.8 * 0.0
-
-        assert (
-            Recommendation.objects
-            .get(idea_1_id=self.ideaC.pk, idea_2_id=self.ideaA.pk)
-            .similarity
-        ) == expected_ideaC_ideaA_similarity
-
-        # Assert that (self.ideaC, self.ideaB) similarity is as expected
-        expected_ideaC_ideaA_similarity = 0.0 * 1.0 + 0.6 * 0.0 + 0.8 * 0.0
-
-        assert (
-            Recommendation.objects
-            .get(idea_1_id=self.ideaC.pk, idea_2_id=self.ideaB.pk)
-            .similarity
-        ) == expected_ideaC_ideaA_similarity

@@ -15,15 +15,38 @@ filename = 'users.csv'
 
 
 def get_top_recommendations(idea_id, number_of_recommendations):
-    return list(
+    recommendations_as_idea1 = list(
         models.Recommendation.objects
         .filter(idea_1_id=idea_id)
         .order_by('-similarity')
         .values_list(
-            'idea_2_id__name',
-            flat=True,
+            'idea_2__name',
+            'similarity',
         )[:int(number_of_recommendations)]
     )
+
+    recommendations_as_idea2 = list(
+        models.Recommendation.objects
+        .filter(idea_2_id=idea_id)
+        .order_by('-similarity')
+        .values_list(
+            'idea_1__name',
+            'similarity',
+        )[:int(number_of_recommendations)]
+    )
+
+    all_recommendations = (
+        recommendations_as_idea1
+        + recommendations_as_idea2
+    )
+
+    all_recommendations = sorted(
+        all_recommendations,
+        key=lambda x: x[1],
+        reverse=True,
+    )
+
+    return [recommendation[0] for recommendation in all_recommendations]
 
 
 def print_recommendations(recommendations):
