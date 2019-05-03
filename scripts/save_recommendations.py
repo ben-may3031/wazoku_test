@@ -11,6 +11,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercise.settings')  # isort:sk
 django.setup()  # isort:skip # noqa
 
 import json
+import sys
+import time
 
 from central import models
 
@@ -39,12 +41,15 @@ def get_similarity(
 
 
 def main():
+    # Store time at start of script run
+    start_time = time.time()
+
     # Delete all existing Recommendation objects
     models.Recommendation.objects.all().delete()
 
     # Evaluate a dict with idea ids as keys and associated
     # TF-IDF dicts as values.
-    idea_tfidf_dict = dict(
+    idea_tfidf_tuples = (
         models.IdeaTfidfWeights.objects
         .values_list('idea_id', 'tfidfs')
     )
@@ -56,11 +61,11 @@ def main():
     for (
         outer_idea_id,
         outer_idea_tfidf_string,
-    ) in idea_tfidf_dict.items():
+    ) in idea_tfidf_tuples:
         for (
             inner_idea_id,
             inner_idea_tfidf_string,
-        ) in idea_tfidf_dict.items():
+        ) in idea_tfidf_tuples:
             if outer_idea_id == inner_idea_id:
                 continue
 
@@ -77,8 +82,17 @@ def main():
                 )
             )
 
+    # Print the size of recommendation_objects
+    print(
+        'recommendation_objects size: '
+        + str(sys.getsizeof(recommendation_objects))
+    )
+
     # Save the new Recommendation objects to the database
     models.Recommendation.objects.bulk_create(recommendation_objects)
+
+    # Print time taken for script to run
+    print('Time taken: ' + str(time.time() - start_time))
 
 
 if __name__ == "__main__":
