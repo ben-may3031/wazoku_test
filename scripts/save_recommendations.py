@@ -11,6 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exercise.settings')  # isort:sk
 django.setup()  # isort:skip # noqa
 
 import json
+import sys
 import time
 
 from central import models
@@ -80,6 +81,20 @@ def main():
                     idea_2_id=inner_idea_id,
                 )
             )
+
+            if len(recommendation_objects) == 10000:
+                # Print the size of recommendation_objects
+                print(sys.getsizeof(recommendation_objects))
+
+                (
+                    models.Recommendation.objects
+                    .bulk_create(recommendation_objects)
+                )
+
+                recommendation_objects = []
+
+    # Print the size of recommendation_objects
+    print(sys.getsizeof(recommendation_objects))
 
     # Save the new Recommendation objects to the database
     models.Recommendation.objects.bulk_create(recommendation_objects)
