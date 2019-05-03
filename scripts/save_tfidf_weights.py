@@ -73,6 +73,10 @@ def save_tfidf_weights(ideas, idf_dict):
 
         for word, idf in idf_dict.items():
             tf = idea['description'].count(word)
+
+            if tf == 0:
+                continue
+
             tfidf = tf * idf
             idea_tfidf_dict[word] = tfidf
             sum_of_squares += tfidf * tfidf
