@@ -44,7 +44,7 @@ def get_top_recommendations(idea_id, number_of_recommendations):
         all_recommendations,
         key=lambda x: x[1],
         reverse=True,
-    )
+    )[:int(number_of_recommendations)]
 
     return [recommendation[0] for recommendation in all_recommendations]
 
